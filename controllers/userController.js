@@ -109,6 +109,25 @@ function checkFileType(file, cb) {
 }
 
 exports.verifyDocuments = (req, res) => {
+    upload(req, res, (err) => {
+        if (err) {
+            // Handle upload errors
+            return res.status(400).json({ message: err });
+        }
+
+        if (!req.files || Object.keys(req.files).length === 0) {
+            // Handle case where no files are uploaded
+            return res.status(400).json({ message: 'No files were uploaded.' });
+        }
+
+        // Respond with success and uploaded file details
+        res.status(200).json({
+            message: 'Files uploaded successfully.',
+            files: req.files,
+        });
+    });
+};
+// exports.verifyDocuments = (req, res) => {
     // upload(req, res, (err) => {
     //     if (err) {
     //         return res.status(400).json({ msg: err });
@@ -117,8 +136,8 @@ exports.verifyDocuments = (req, res) => {
     //     res.send('Files uploaded successfully');
     // });
 
-    res.status(200).json({ message: 'File upload temporarily disabled. Proceeding without upload.' });
-};
+//     res.status(200).json({ message: 'File upload temporarily disabled. Proceeding without upload.' });
+// };
 
 
 
