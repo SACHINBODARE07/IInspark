@@ -6,6 +6,7 @@ const authMiddleware = require('../controllers/authMiddleware');
 router.post('/signup', userController.signup);
 router.post('/signin', userController.signin);
 router.post('/verifyDocuments', userController.verifyDocuments);
+
 router.post('/updateProfile',authMiddleware, userController.updateProfile);
 router.post('/updateAccountInfo',authMiddleware, userController.updateAccountInfo);
 router.post('/updatePassword',authMiddleware, userController.updatePassword);

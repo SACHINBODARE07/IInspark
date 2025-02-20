@@ -109,39 +109,38 @@ function checkFileType(file, cb) {
 }
 
 exports.verifyDocuments = (req, res) => {
-    upload(req, res, (err) => {
-        if (err) {
-            // Handle upload errors
-            return res.status(400).json({ message: err });
-        }
+  upload(req, res, (err) => {
+      if (err) {
+          // Handle upload errors
+          return res.status(400).json({ message: err });
+      }
 
-        if (!req.files || Object.keys(req.files).length === 0) {
-            // Handle case where no files are uploaded
-            return res.status(400).json({ message: 'No files were uploaded.' });
-        }
+      if (!req.files || Object.keys(req.files).length === 0) {
+          // Handle case where no files are uploaded
+          return res.status(400).json({ message: 'No files were uploaded.' });
+      }
 
-        // Respond with success and uploaded file details
-        res.status(200).json({
-            message: 'Files uploaded successfully.',
-            files: req.files,
-        });
-    });
+      // Respond with success and uploaded file details
+      res.status(200).json({
+          message: 'Files uploaded successfully.',
+          files: req.files,
+      });
+  });
 };
 // exports.verifyDocuments = (req, res) => {
-    // upload(req, res, (err) => {
-    //     if (err) {
-    //         return res.status(400).json({ msg: err });
-    //     }
-    //     // Handle file verification
-    //     res.send('Files uploaded successfully');
-    // });
+//     upload(req, res, (err) => {
+//         if (err) {
+//             return res.status(400).json({ msg: err });
+//         }
+        // Handle file verification
+//         res.send('Files uploaded successfully');
+//     });
 
-//     res.status(200).json({ message: 'File upload temporarily disabled. Proceeding without upload.' });
-// };
+//         res.send('Files uploaded successfully');
+//     });
 
-
-
-exports.updateProfile = async (req, res) => {
+// >>>>>>> ef9902e (Allow origin from everywhere)
+ async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: 'Unauthorized' });
