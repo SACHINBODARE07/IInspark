@@ -13,8 +13,17 @@ exports.getProducts = async (req, res) => {
 
 exports.buyProduct = async (req, res) => {
     try {
+        console.log("Request Body:", req.body);
+
         const user = await User.findById(req.user.id);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
         const product = await Product.findById(req.body.productId);
+        if (!product) {
+            return res.status(404).json({ message: "Product not found" });
+        }
 
         if (user.coins < product.price) {
             return res.status(400).json({ message: 'Not enough coins' });
@@ -22,10 +31,11 @@ exports.buyProduct = async (req, res) => {
 
         user.coins -= product.price;
         await user.save();
-        
+
         res.status(200).json({ message: 'Product purchased successfully' });
     } catch (error) {
         console.error('Error purchasing product:', error);
         res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
+

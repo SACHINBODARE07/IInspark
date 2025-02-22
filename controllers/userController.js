@@ -41,33 +41,34 @@ exports.signup = async (req, res) => {
   
 
 exports.signin = async (req, res) => {
-    const { email, password } = req.body;
+  const { email, password } = req.body;
 
-    try {
-        let user = await User.findOne({ email });
-        if (!user) {
-            return res.status(400).json({ msg: 'Email not found' });
-        }
-
-        const isMatch = await bcrypt.compare(password, user.password);
-        if (!isMatch) {
-            return res.status(400).json({ msg: 'Invalid password' });
-        }
-
-        const payload = {
-            user: {
-                id: user.id
-            }
-        };
-
-        jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
-            if (err) throw err;
-            res.json({ token });
-        });
-    } catch (err) {
-        console.error(err.message);
-        res.status(500).send('Server error');
+  try {
+    let user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({ msg: 'Email not found' });
     }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ msg: 'Invalid password' });
+    }
+
+    const payload = {
+      user: {
+        id: user.id,
+        name: user.name // Include the user's name in the payload
+      }
+    };
+
+    jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
+      if (err) throw err;
+      res.json({ token, name: user.name }); // Send the token and name in the response
+    });
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
 };
 
 exports.verifyDocuments = (req, res) => {
@@ -139,8 +140,8 @@ exports.verifyDocuments = (req, res) => {
 //         res.send('Files uploaded successfully');
 //     });
 
-// >>>>>>> ef9902e (Allow origin from everywhere)
- async (req, res) => {
+
+exports.updateProfile = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: 'Unauthorized' });
@@ -155,7 +156,7 @@ exports.verifyDocuments = (req, res) => {
 
     user.name = name;
     user.email = email;
-    user.grade = grade;
+    // user.grade = grade;
     user.profileImage = profileImage;
 
     await user.save();
@@ -166,6 +167,8 @@ exports.verifyDocuments = (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
+
 
 exports.updateAccountInfo = async (req, res) => {
   try {
@@ -284,6 +287,29 @@ exports.verifyOTP = async (req, res) => {
     res.status(200).json({ message: 'Email updated successfully' });
   } catch (error) {
 console.error('Error during OTP verification:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+exports.fetchProfile = async (req, res) => {
+  try {
+    if (!req.user || !req.user.id) {
+      return res.status(401).json({ message: 'Unauthorized' });
+    }
+
+    const user = await User.findById(req.user.id).select('name level coins');
+
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({
+      name: user.name,
+      level: user.level,
+      coins: user.coins
+    });
+  } catch (error) {
+    console.error('Error fetching profile:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
