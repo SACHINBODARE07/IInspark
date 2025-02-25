@@ -13,6 +13,6 @@ router.post('/updatePassword',authMiddleware, userController.updatePassword);
 router.post('/updateEmail',authMiddleware, userController.updateEmail);
 router.post('/sendOTP',authMiddleware, userController.sendOTP);
 router.post('/verifyOTP',authMiddleware, userController.verifyOTP);
-router.get('/profilefetch', authMiddleware, userController.fetchProfile);
+router.get("/user-profile", authMiddleware, userController.getUserProfile);
 
 module.exports = router;

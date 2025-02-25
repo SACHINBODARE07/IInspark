@@ -1,3 +1,4 @@
+const { profile } = require('console');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
@@ -57,7 +58,8 @@ exports.signin = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        name: user.name // Include the user's name in the payload
+        name: user.name, // Include the user's name in the payload
+        coins: user.coins // Include the user's coins in the payload
       }
     };
 
@@ -291,13 +293,13 @@ console.error('Error during OTP verification:', error);
   }
 };
 
-exports.fetchProfile = async (req, res) => {
+exports.getUserProfile = async (req, res) => {
   try {
     if (!req.user || !req.user.id) {
       return res.status(401).json({ message: 'Unauthorized' });
     }
 
-    const user = await User.findById(req.user.id).select('name level coins');
+    const user = await User.findById(req.user.id).select('name profileImage level coins');
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -305,7 +307,8 @@ exports.fetchProfile = async (req, res) => {
 
     res.status(200).json({
       name: user.name,
-      level: user.level,
+      profileImage: user.profileImage,
+      level : user.level,
       coins: user.coins
     });
   } catch (error) {
@@ -313,3 +316,4 @@ exports.fetchProfile = async (req, res) => {
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };
+
