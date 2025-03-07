@@ -14,10 +14,10 @@ const UserSchema = new mongoose.Schema({
         schoolName: String,
     },
     documents: {
-    studentIdFront: String,
-    studentIdBack: String,
-    adharCardFront: String,
-    adharCardBack: String,
+        studentIdFront: String,
+        studentIdBack: String,
+        adharCardFront: String,
+        adharCardBack: String,
     },
     profileImage: String,
     profileLevel: { type: Number, default: 1 },
@@ -25,15 +25,23 @@ const UserSchema = new mongoose.Schema({
     skills: [String],
     language: String,
     accountInfo: {
-      profileName: String,
-      email: String,
-      grade: String,
+        profileName: String,
+        email: String,
+        grade: String,
     },
     progress: {
-      level: { type: Number, default: 1 },
-      videos: [String],
-  },
-  leaderboardScore: { type: Number, default: 0 }
-});
-UserSchema.index({ email: 1 }, { unique: true }); // Example index
+        level: { type: Number, default: 1 },
+        videos: [String],
+    },
+    leaderboardScore: { type: Number, default: 0 },
+
+    // OTP Fields for Email Verification
+    otp: { type: Number },  // Stores OTP
+    otpExpiry: { type: Date },  // OTP Expiry Time
+    isVerified: { type: Boolean, default: false },  // Email Verified?
+
+}, { timestamps: true });
+
+UserSchema.index({ email: 1 }, { unique: true });
+
 module.exports = mongoose.model('User', UserSchema);
