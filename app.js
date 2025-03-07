@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cors = require('cors');
 const connectDB = require('./config/db');
+const nodemailer = require("nodemailer");
 
 // Import routes
 const userRoutes = require('./routes/userRoutes');
@@ -35,6 +36,25 @@ app.use(limiter);
 app.get('/', (req, res) => {
     res.send('Welcome to the Learning App API!');
 });
+
+// Configure Nodemailer
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: process.env.EMAIL_USER, // Load from .env
+    pass: process.env.EMAIL_PASS, // Load from .env
+  },
+});
+
+// Test Nodemailer connection
+transporter.verify((error, success) => {
+  if (error) {
+    console.error('Nodemailer connection error:', error);
+  } else {
+    console.log('Nodemailer is ready to send emails');
+  }
+});
+
 
 // Use routes
 app.use('/api/users', userRoutes);
