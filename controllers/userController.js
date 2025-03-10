@@ -452,7 +452,7 @@ exports.verifyLoginOTP = async (req, res) => {
       },
     };
 
-    jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '1h' }, (err, token) => {
+    jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
       res.status(200).json({ message: 'Login successful', token });
     });
