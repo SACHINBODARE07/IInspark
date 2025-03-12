@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const authMiddleware = require('../controllers/authMiddleware');
+const { sendOTPForPasswordReset } = require("../controllers/userController");
+const {  verifyOTPAndUpdatePassword } = require("../controllers/userController");
 
 router.post('/signup', userController.signup);
 router.post('/signin', userController.signin);
@@ -17,5 +19,10 @@ router.get("/user-profile", authMiddleware, userController.getUserProfile);
 // New routes for login with OTP
 router.post('/sendLoginOTP', userController.sendLoginOTP);
 router.post('/verifyLoginOTP',  userController.verifyLoginOTP);
+// Route to send OTP for password reset
+router.post("/sendOTPForPasswordReset",authMiddleware, sendOTPForPasswordReset);
+
+// Route to verify OTP and update password
+router.post("/verifyOTPAndUpdatePassword",authMiddleware, verifyOTPAndUpdatePassword);
 
 module.exports = router;
