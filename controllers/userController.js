@@ -278,7 +278,7 @@ exports.sendOTP = async (req, res) => {
     }
 
     // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
+    const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
     const otpExpiry = Date.now() + 5 * 60 * 1000; // OTP expires in 5 mins
 
     // Store OTP in the database (update existing user)
@@ -387,9 +387,9 @@ exports.sendLoginOTP = async (req, res) => {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpExpiry = Date.now() + 5 * 60 * 1000; // OTP expires in 5 mins
+     // Generate OTP
+     const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
+     const otpExpiry = Date.now() + 5 * 60 * 1000; // OTP expires in 5 mins
 
     // Save OTP and expiry time in the user document
     user.otp = otp;
@@ -471,9 +471,9 @@ exports.sendOTPForPasswordReset = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000);
-    const otpExpiry = Date.now() + 5 * 60 * 1000; // OTP expires in 5 minutes
+      // Generate OTP
+      const otp = Math.floor(1000 + Math.random() * 9000); // 4-digit OTP
+      const otpExpiry = Date.now() + 5 * 60 * 1000; // OTP expires in 5 mins
 
     user.otp = otp;
     user.otpExpiry = otpExpiry;
