@@ -25,4 +25,11 @@ router.post("/sendOTPForPasswordReset",authMiddleware, sendOTPForPasswordReset);
 // Route to verify OTP and update password
 router.post("/verifyOTPAndUpdatePassword",authMiddleware, verifyOTPAndUpdatePassword);
 
+router.get('/getUserData ', authMiddleware, userController.getUserData );
+
+// User-side routes
+router.get('/levels', authMiddleware, userController.getLevels);
+router.get('/products', authMiddleware, userController.getProducts);
+router.get('/videos', authMiddleware, userController.getVideos);
+
 module.exports = router;

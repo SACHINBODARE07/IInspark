@@ -1,5 +1,21 @@
-const Product = require('../models/product');
+const Product = require('../models/Product'); // Import the model
 const User = require('../models/User');
+
+
+
+exports.addProduct = async (req, res) => {
+  try {
+    const { name, description, price, category, gender, imageUrl } = req.body;
+
+    const newProduct = new Product({ name, description, price, category, gender, imageUrl });
+    await newProduct.save();
+
+    res.status(201).json({ message: 'Product added successfully', product: newProduct });
+  } catch (error) {
+    console.error('Error adding product:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
 
 exports.getProducts = async (req, res) => {
     try {

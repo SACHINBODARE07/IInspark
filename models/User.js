@@ -4,8 +4,8 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    dateOfBirth: { type: Date, required: true },
-    grade: { type: String, required: true },
+    dateOfBirth: { type: Date, },
+    grade: { type: String, },
     subjects: [String],
     schoolDetails: {
         state: String,
@@ -39,6 +39,7 @@ const UserSchema = new mongoose.Schema({
     otp: { type: Number },  // Stores OTP
     otpExpiry: { type: Date },  // OTP Expiry Time
     isVerified: { type: Boolean, default: false },  // Email Verified?
+    isAdmin: { type: Boolean, default: false }, // Add this field
 
 }, { timestamps: true });
 

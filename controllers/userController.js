@@ -4,6 +4,9 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const multer = require('multer');  
 const nodemailer = require('nodemailer');
+const Level = require('../models/Level');
+const Product = require('../models/Product');
+const Video = require('../models/Video');
 
 // Using memory storage 
 const storage = multer.memoryStorage();
@@ -60,14 +63,14 @@ exports.signin = async (req, res) => {
     const payload = {
       user: {
         id: user.id,
-        name: user.name, // Include the user's name in the payload
-        coins: user.coins // Include the user's coins in the payload
+        name: user.name,
+        isAdmin: user.isAdmin, // Include isAdmin in the payload
       }
     };
 
     jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, name: user.name }); // Send the token and name in the response
+      res.json({ token, name: user.name, isAdmin: user.isAdmin }); // Send isAdmin in the response
     });
   } catch (err) {
     console.error(err.message);
@@ -530,5 +533,61 @@ exports.verifyOTPAndUpdatePassword = async (req, res) => {
   } catch (error) {
     console.error("Error verifying OTP and updating password:", error);
     res.status(500).json({ message: "Server error", error: error.message });
+  }
+};
+
+
+
+
+// Fetch all data for user
+exports.getUserData = async (req, res) => {
+  try {
+    const levels = await Level.find({});
+    const products = await Product.find({});
+    const videos = await Video.find({});
+
+    res.status(200).json({
+      message: 'Data fetched successfully',
+      levels,
+      products,
+      videos,
+    });
+  } catch (error) {
+    console.error('Error fetching user data:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
+// Get all levels
+exports.getLevels = async (req, res) => {
+  try {
+    const levels = await Level.find({});
+    res.status(200).json({ message: 'Levels fetched successfully', levels });
+  } catch (error) {
+    console.error('Error fetching levels:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Get all products
+exports.getProducts = async (req, res) => {
+  try {
+    const products = await Product.find({});
+    res.status(200).json({ message: 'Products fetched successfully', products });
+  } catch (error) {
+    console.error('Error fetching products:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+// Get all videos
+exports.getVideos = async (req, res) => {
+  try {
+    const videos = await Video.find({});
+    res.status(200).json({ message: 'Videos fetched successfully', videos });
+  } catch (error) {
+    console.error('Error fetching videos:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

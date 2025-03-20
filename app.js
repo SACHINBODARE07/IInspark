@@ -12,6 +12,7 @@ const userRoutes = require('./routes/userRoutes');
 const levelRoutes = require('./routes/levelRoutes');
 const videoRoutes = require('./routes/videoRoutes');
 const productRoutes = require('./routes/productRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const app = express();
 
@@ -61,6 +62,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/levels', levelRoutes);
 app.use('/api/videos', videoRoutes);
 app.use('/api/products', productRoutes);
+app.use('/api/admin', adminRoutes);
 
 // Start server
 const PORT = process.env.PORT || 5700;
