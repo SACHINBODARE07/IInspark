@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const multer = require('multer');  
 const nodemailer = require('nodemailer');
 const Level = require('../models/Level');
-const Product = require('../models/Product');
+const Product = require('../models/product');
 const Video = require('../models/Video');
 
 // Using memory storage 
