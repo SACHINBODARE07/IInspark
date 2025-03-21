@@ -1,5 +1,5 @@
 const Level = require('../models/Level');
-const Product = require('../models/Product');
+const Product = require('../models/product');
 const Video = require('../models/Video');
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');

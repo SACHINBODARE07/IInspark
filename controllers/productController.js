@@ -1,4 +1,4 @@
-const Product = require('../models/Product'); // Import the model
+const Product = require('../models/product'); // Import the model
 const User = require('../models/User');
 
 
