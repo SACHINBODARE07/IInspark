@@ -44,10 +44,10 @@ exports.signup = async (req, res) => {
       res.status(500).json({ message: 'Server error', error: error.message });
     }
 };
-  
+
 
 exports.signin = async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, isAdmin } = req.body;
 
   try {
     let user = await User.findOne({ email });
@@ -60,17 +60,22 @@ exports.signin = async (req, res) => {
       return res.status(400).json({ msg: 'Invalid password' });
     }
 
+    // Prevent non-admins from logging in as admins
+    if (isAdmin && !user.isAdmin) {
+      return res.status(403).json({ msg: 'Unauthorized: Only admins can sign in as admin' });
+    }
+
     const payload = {
       user: {
         id: user.id,
         name: user.name,
-        isAdmin: user.isAdmin, // Include isAdmin in the payload
+        isAdmin: user.isAdmin, // Ensure this is set correctly
       }
     };
 
     jwt.sign(payload, 'your_jwt_secret', { expiresIn: '1h' }, (err, token) => {
       if (err) throw err;
-      res.json({ token, name: user.name, isAdmin: user.isAdmin }); // Send isAdmin in the response
+      res.json({ token, name: user.name, isAdmin: user.isAdmin });
     });
   } catch (err) {
     console.error(err.message);
@@ -588,6 +593,99 @@ exports.getVideos = async (req, res) => {
     res.status(200).json({ message: 'Videos fetched successfully', videos });
   } catch (error) {
     console.error('Error fetching videos:', error);
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
+
+
+// 🪙 **Update Coins**
+exports.updateCoins = async (req, res) => {
+    const { userId, coins } = req.body;
+
+    if (!userId || typeof coins !== "number" || coins < 0) {
+        return res.status(400).json({ message: "Invalid input!" });
+    }
+
+    try {
+        let user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.coins += coins;
+        await user.save();
+
+        res.json({ message: "Coins updated!", totalCoins: user.coins });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// 🎯 **Update Profile Level**
+exports.updateProfileLevel = async (req, res) => {
+    const { userId } = req.body;
+
+    if (!userId) {
+        return res.status(400).json({ message: "User ID is required!" });
+    }
+
+    try {
+        let user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.profileLevel = Math.floor(user.coins / 500) + 1;
+        await user.save();
+
+        res.json({ message: "Profile Level updated!", profileLevel: user.profileLevel });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// 🏆 **Update Leaderboard Score**
+exports.updateLeaderboard = async (req, res) => {
+    const { userId, points } = req.body;
+
+    if (!userId || typeof points !== "number" || points < 0) {
+        return res.status(400).json({ message: "Invalid input!" });
+    }
+
+    try {
+        let user = await User.findById(userId);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        user.leaderboardScore += points;
+        await user.save();
+
+        res.json({ message: "Leaderboard Score updated!", leaderboardScore: user.leaderboardScore });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+// 🔍 **Get User Data**
+exports.getUserData = async (req, res) => {
+    try {
+        const user = await User.findById(req.user.id);
+        if (!user) return res.status(404).json({ message: "User not found" });
+
+        res.json(user);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+// Get User Grade
+exports.getUserGrade = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ grade: user.grade });
+  } catch (error) {
+    console.error('Error fetching grade:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 };

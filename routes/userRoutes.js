@@ -27,6 +27,16 @@ router.post("/verifyOTPAndUpdatePassword",authMiddleware, verifyOTPAndUpdatePass
 
 router.get('/getUserData ', authMiddleware, userController.getUserData );
 
+// Fetch user's grade
+router.get('/getGrade', authMiddleware, userController.getUserGrade);
+
+
+// 🎮 **User Coins, Profile Level, and Leaderboard APIs**
+router.put('/updateCoins', authMiddleware, userController.updateCoins);
+router.put('/updateProfileLevel', authMiddleware, userController.updateProfileLevel);
+router.put('/updateLeaderboard', authMiddleware, userController.updateLeaderboard);
+router.get('/getUserData', authMiddleware, userController.getUserData);
+
 // User-side routes
 router.get('/levels', authMiddleware, userController.getLevels);
 router.get('/products', authMiddleware, userController.getProducts);
