@@ -126,10 +126,18 @@ Check logs in Render dashboard and update `CORS` settings.
 
 ---
 
-## 📜 License
-This project is licensed under the **MIT License**.
+Copyright (c) 2025 Bitspace Technology
 
----
+This project (iinSpark) is proprietary and confidential. Unauthorized copying, distribution, or modification of this software, via any medium, is strictly prohibited.
+
+Developed by: Sachin Bodare  
+Company: Bitspace Technology  
+Client: iinSpark  
+
+For inquiries, please contact:  
+📧 Email: sachinbodare2@gmail.com  
+📍 Pune, Maharashtra, India
+
 
 ## 🤝 Contribution
 Feel free to submit issues, PRs, and feature requests!
