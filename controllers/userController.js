@@ -662,6 +662,20 @@ exports.updateLeaderboard = async (req, res) => {
     }
 };
 
+// 🏆 **Get Leaderboard**
+exports.getLeaderboard = async (req, res) => {
+  try {
+    const users = await User.find({})
+      .sort({ leaderboardScore: -1 }) // Sort by leaderboardScore in descending order
+      .select('name leaderboardScore') // Select only name and leaderboardScore fields
+      .exec();
+
+    res.status(200).json({ message: "Leaderboard fetched successfully!", leaderboard: users });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
 // 🔍 **Get User Data**
 exports.getUserData = async (req, res) => {
     try {
