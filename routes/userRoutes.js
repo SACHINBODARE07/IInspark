@@ -35,7 +35,7 @@ router.get('/getGrade', authMiddleware, userController.getUserGrade);
 router.put('/updateCoins', authMiddleware, userController.updateCoins);
 router.put('/updateProfileLevel', authMiddleware, userController.updateProfileLevel);
 router.put('/updateLeaderboard', authMiddleware, userController.updateLeaderboard);
-router.post('/getUserData',authMiddleware, userController.getUserData);
+router.get('/getUserData',authMiddleware, userController.getUserData);
 
 // User-side routes
 router.get('/levels', authMiddleware, userController.getLevels);
